@@ -22,7 +22,7 @@ public class TestState extends State {
 
     public ControlsOutput exec(DataPacket data, Dominance bot) {
         ControlsOutput controls = new ControlsOutput();
-        bot.setManeuver(new WaveDashManeuver(data, data.car.orientation.foward.flatten()));
+        bot.setManeuver(new HalfFlipManeuver(data));
 
         return controls;
     }

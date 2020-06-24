@@ -5,8 +5,8 @@ import java.util.ArrayList;
 
 public class LUT{
 
-    public static final AccelModel[] accelTable = createLUT("acceleration.txt");
-    public static final AccelModel[] boostAccelTable = createLUT("boost_acceleration.txt");
+    public static final AccelModel[] accelTable = createLUT("LUTS/acceleration.txt");
+    public static final AccelModel[] boostAccelTable = createLUT("LUTS/boost_acceleration.txt");
     public static AccelModel[] createLUT(String fileName){
         ArrayList<AccelModel> lut = new ArrayList<>();
 

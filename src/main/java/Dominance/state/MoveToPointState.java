@@ -73,9 +73,15 @@ public class MoveToPointState extends State {
                 && dist > 2200
                 && forwardDotTarget < -0.9
                 && data.time > lastHalfFlipEnd + TIME_BETWEEN_HALFFLIP
-                && !(bot.currentManuever == flip)) {
-            //bot.setManeuver(flip = new HalfFlipManeuver(data, target));
-            //lastHalfFlipEnd = data.time;
+                && !(bot.getManeuver() == flip)) {
+            if(flip.done()){
+                flip = null;
+
+            }else{
+                bot.setManeuver(flip = new HalfFlipManeuver(data, target));
+                lastHalfFlipEnd = data.time;
+            }
+
         }
 
         double currentSpeed = myCar.velocity.dot(carToTarget.normalized());

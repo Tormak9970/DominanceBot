@@ -40,7 +40,7 @@ ArrayList<Vec3> opponents = new ArrayList<>();
         }
 
         if(startDefense && !(data.bot.state instanceof DefenseState)){
-            data.bot.state = new DefenseState();
+            //data.bot.state = new DefenseState();
         }
 
         if(data.team == 0){
