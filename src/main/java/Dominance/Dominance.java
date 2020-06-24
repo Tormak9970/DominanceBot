@@ -20,8 +20,8 @@ public class Dominance implements Bot {
 
     private final int playerIndex;
 
-    //public State state = new AtbaState();
-    public State state = new TestState();
+    public State state = new AtbaState();
+    //public State state = new TestState();
     public Maneuver currentManuever;
     public boolean isManuever = false;
 

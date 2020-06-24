@@ -50,7 +50,7 @@ public class MoveToPointState extends State {
         Vec3 localTarget = RLMath.toLocal(target, data.car.position, data.car.orientation);
 
         double dist = carToTarget.mag();
-        double fowardDotTarget = myCar.orientation.foward.dot(carToTarget.normalized());
+        double forwardDotTarget = myCar.orientation.foward.dot(carToTarget.normalized());
 
         //dodge conditions
 
@@ -58,11 +58,11 @@ public class MoveToPointState extends State {
                 && myCar.hasWheelContact
                 && myCar.isUpright
                 && dist > 2200
-                && fowardDotTarget > 0.9
+                && forwardDotTarget > 0.9
                 && myCar.velocity.mag() > 650
                 && data.time > lastWaveDashEnd + TIME_BETWEEN_WaveDashes) {
-            bot.setManeuver(dash = new WaveDashManeuver(data, target));
-            lastWaveDashEnd = data.time;
+            //bot.setManeuver(dash = new WaveDashManeuver(data, target));
+            //lastWaveDashEnd = data.time;
         }
 
         //halfFlip conditions
@@ -71,18 +71,18 @@ public class MoveToPointState extends State {
                 && myCar.hasWheelContact
                 && myCar.isUpright
                 && dist > 2200
-                && fowardDotTarget < -0.9
+                && forwardDotTarget < -0.9
                 && data.time > lastHalfFlipEnd + TIME_BETWEEN_HALFFLIP
                 && !(bot.currentManuever == flip)) {
-            bot.setManeuver(flip = new HalfFlipManeuver(data, target));
-            lastHalfFlipEnd = data.time;
+            //bot.setManeuver(flip = new HalfFlipManeuver(data, target));
+            //lastHalfFlipEnd = data.time;
         }
 
         double currentSpeed = myCar.velocity.dot(carToTarget.normalized());
         if (currentSpeed < targetSpeed) {
             //we need to go faster
             controls.withThrottle(1.0);
-            if (targetSpeed > 610  && currentSpeed + 60 < targetSpeed && fowardDotTarget > 0.8) {
+            if (targetSpeed > 610  && currentSpeed + 60 < targetSpeed && forwardDotTarget > 0.8) {
                 controls.withBoost(true);
             }
         }

@@ -98,7 +98,7 @@ ArrayList<Vec3> opponents = new ArrayList<>();
         }
 
         if (data.car.boost <= 30 && !oppHasPossession) {
-            data.bot.state = new CollectBoostState();
+            //data.bot.state = new CollectBoostState();
         }
         return super.exec(data, bot);
     }
