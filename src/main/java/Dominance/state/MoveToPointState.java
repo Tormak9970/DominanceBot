@@ -14,6 +14,7 @@ import java.awt.*;
 
 public class MoveToPointState extends State {
 
+    boolean canSpeedUp;
     public Vec3 target = Vec3.ZERO;
     public double targetSpeed = 1410;
     public boolean allowWaveDash = true;
@@ -92,7 +93,7 @@ public class MoveToPointState extends State {
                 controls.withBoost(true);
             }
         }
-        else {
+        else if(currentSpeed > targetSpeed && !canSpeedUp){
             //we need to slow down
             double extraSpeed = currentSpeed - targetSpeed;
             controls.withThrottle(0.3 - extraSpeed / 500);
@@ -105,10 +106,6 @@ public class MoveToPointState extends State {
 
         String carToBallDist = "Car to Ball: " + carToBall;
         StaticRenderer.displayText(Color.ORANGE, 100, 140, 1, carToBallDist, data);
-
-        if(targetSpeed < 420 && carToBall < 320){
-            controls.withThrottle(1.0);
-        }
 
         double turningAngle = myCar.orientation.foward.angle(target.minus(myCar.position));
         double steerAngle = Math.atan2(localTarget.y, localTarget.x);

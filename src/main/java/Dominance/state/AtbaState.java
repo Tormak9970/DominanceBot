@@ -15,11 +15,11 @@ import java.util.ArrayList;
 
 public class AtbaState extends MoveToPointState {
 
-boolean isReachable;
-boolean startDefense;
-boolean oppHasPossession;
-ArrayList<Vec3> teammates = new ArrayList<>();
-ArrayList<Vec3> opponents = new ArrayList<>();
+    boolean isReachable;
+    boolean startDefense;
+    boolean oppHasPossession;
+    ArrayList<Vec3> teammates = new ArrayList<>();
+    ArrayList<Vec3> opponents = new ArrayList<>();
 
     @Override
     public ControlsOutput exec(DataPacket data, Dominance bot) {
@@ -56,7 +56,7 @@ ArrayList<Vec3> opponents = new ArrayList<>();
                 Vec3 castedTemp = Vec3.cast(tempLocation);
                 double delta = slice.gameSeconds() - data.time;
                 ballScoringVec = goalPos.minus(castedTemp);
-                idealContactPoint = target.add(ballScoringVec.scaledToMag(92.577));
+                idealContactPoint = target.add(ballScoringVec.scaledToMag(92.75));
                 if (tempLocation.z() < 150 && Kinematics.timeFromLength((idealContactPoint.minus(carPos).mag()), data.car.velocity.mag(), data.car.boost) < delta) {
                     isReachable = true;
                     target = idealContactPoint;
@@ -71,10 +71,24 @@ ArrayList<Vec3> opponents = new ArrayList<>();
             /* Prediction is not available, so we fall back to current location */
         }
 
+        //bad
+        Vec3 carToBall = data.ball.position.minus(carPos);
+        if(idealContactPoint.dist(carToBall.scaledToMag(-92.75).add(data.ball.position)) >= 131.1683079){
+            target = carToBall.cross(Vec3.UP).scaledToMag(500).add(data.ball.position);
+        }
+
+        StaticRenderer.displayVector(Color.WHITE, data.ball.position, target, data);
         StaticRenderer.displayVector(Color.GREEN, data.ball.position, ballScoringVec, data);
         StaticRenderer.displayVector(Color.CYAN, data.car.position, idealContactPoint, data);
 
         targetSpeed = (target.minus(carPos).flatten().mag())/Math.max(targetTime, 0.001);
+        if(data.ball.position.dist(carPos) > 500){
+            super.canSpeedUp = true;
+        }else{
+            super.canSpeedUp = false;
+            targetSpeed += 600;
+        }
+
 
         for (CarData otherCar : data.allCars) {
             if (otherCar.team != data.car.team) {
