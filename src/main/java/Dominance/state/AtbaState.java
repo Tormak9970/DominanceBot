@@ -32,12 +32,15 @@ public class AtbaState extends MoveToPointState {
         Vec3 idealContactPoint = Vec3.ZERO;
         Vec3 ballScoringVec = Vec3.ZERO;
 
+        /*
         if(team == 1){
             startDefense = (data.car.position.y < data.ball.position.y) && (data.car.position.y > 1048);
 
         } else {
             startDefense = (data.car.position.y > data.ball.position.y) && (data.car.position.y < -1048);
         }
+
+         */
 
         if(startDefense && !(data.bot.state instanceof DefenseState)){
             //data.bot.state = new DefenseState();
@@ -72,12 +75,18 @@ public class AtbaState extends MoveToPointState {
         }
 
         //bad
+
         Vec3 carToBall = data.ball.position.minus(carPos);
-        if(idealContactPoint.dist(carToBall.scaledToMag(-92.75).add(data.ball.position)) >= 131.1683079){
-            target = carToBall.cross(Vec3.UP).scaledToMag(500).add(data.ball.position);
+        if (target == carToBall.cross(Vec3.UP).scaledToMag(500).add(data.ball.position)){
+            target = idealContactPoint;
+        } else {
+            if(idealContactPoint.dist(carToBall.scaledToMag(-92.75).add(data.ball.position)) >= 131.1683079){
+                target = carToBall.cross(Vec3.UP).scaledToMag(500).add(data.ball.position);
+            }
         }
 
-        StaticRenderer.displayVector(Color.WHITE, data.ball.position, target, data);
+
+        StaticRenderer.displayVector(Color.WHITE, data.car.position, target, data);
         StaticRenderer.displayVector(Color.GREEN, data.ball.position, ballScoringVec, data);
         StaticRenderer.displayVector(Color.CYAN, data.car.position, idealContactPoint, data);
 
