@@ -107,9 +107,9 @@ public class MoveToPointState extends State {
         String carToBallDist = "Car to Ball: " + carToBall;
         StaticRenderer.displayText(Color.ORANGE, 100, 140, 1, carToBallDist, data);
 
-        double turningAngle = myCar.orientation.foward.angle(target.minus(myCar.position));
+        double turningAngle = myCar.orientation.foward.angleInRadians(target.minus(myCar.position));
         double steerAngle = Math.atan2(localTarget.y, localTarget.x);
-        if (Math.abs(steerAngle) > Math.PI / 2) {
+        if (Math.abs(steerAngle) + 0.5 > Math.PI / 2) {
             controls.withSlide();
         }
         controls.withSteer(-steerAngle * 5);

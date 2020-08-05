@@ -30,6 +30,9 @@ public class DataPacket {
     public final BallData ball;
     public final int team;
 
+    public final Vec3 blueGoalPos;
+    public final Vec3 orangeGoalPos;
+
     /** The index of your player */
     public final int playerIndex;
 
@@ -45,6 +48,9 @@ public class DataPacket {
         this.bot = bot;
         this.playerIndex = bot.getIndex();
         this.ball = new BallData(packet.ball());
+
+        this.blueGoalPos = new Vec3(0, -5120 * 2, 92.75);
+        this.orangeGoalPos = new Vec3(0, 5120 * 2, 92.75);
 
         allCars = new ArrayList<>();
         for (int i = 0; i < packet.playersLength(); i++) {

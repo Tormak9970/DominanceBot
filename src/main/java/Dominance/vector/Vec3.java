@@ -94,11 +94,18 @@ public class Vec3 extends rlbot.vector.Vector3 {
         return new Vec3(x, y, 0);
     }
 
-    public double angle(Vec3 other) {
+    public double angleInRadians(Vec3 other) {
         double mag2 = magSqr();
         double vmag2 = other.magSqr();
         double dot = dot(other);
         return Math.acos(dot / Math.sqrt(mag2 * vmag2));
+    }
+
+    public double angleInDegrees(Vec3 other) {
+        double mag2 = magSqr();
+        double vmag2 = other.magSqr();
+        double dot = dot(other);
+        return Math.acos(dot / Math.sqrt(mag2 * vmag2)) / Math.PI * 180;
     }
 
     public Vec3 cross(Vec3 other) {
@@ -111,6 +118,10 @@ public class Vec3 extends rlbot.vector.Vector3 {
     public static Vec3 cast(rlbot.flat.Vector3 v){
         Vec3 castedVector = new Vec3(v.x(), v.y(), v.z());
         return castedVector;
+    }
+
+    public boolean equals(Vec3 other){
+        return this.x == other.x && this.y == other.y && this.z == other.z;
     }
 
     @Override
