@@ -33,7 +33,6 @@ public class AtbaState extends MoveToPointState {
         Vec3 ballScoringVec = Vec3.ZERO;
         Vec3 getToScoringPos1 = Vec3.ZERO;
         Vec3 getToScoringPos2 = Vec3.ZERO;
-        Vec3 endPoint = Vec3.ZERO;
 
 
         if(team == 1){
@@ -60,9 +59,8 @@ public class AtbaState extends MoveToPointState {
                 ballScoringVec = goalPos.minus(castedTemp);
                 idealContactPoint = target.add(ballScoringVec.scaledToMag(92.75));
                 if (tempLocation.z() < 150 && Kinematics.timeFromLength((idealContactPoint.minus(carPos).mag()), data.car.velocity.mag(), data.car.boost) < delta) {
-                    getToScoringPos1 = data.ball.position.minus(carPos).cross(Vec3.UP).scaledToMag(550).add(data.ball.position.scaled(-1));
-                    getToScoringPos2 = data.ball.position.minus(carPos).cross(Vec3.UP).scaledToMag(-550).add(data.ball.position.scaled(-1));
-                    endPoint = data.ball.position.add(ballScoringVec.scaledToMag(500));
+                    getToScoringPos1 = data.ball.position.minus(carPos).cross(Vec3.UP).rotate2d(-30.0 / 180.0 * Math.PI).scaledToMag(550).add(data.ball.position.scaled(-1));
+                    getToScoringPos2 = data.ball.position.minus(carPos).cross(Vec3.UP).rotate2d(30.0 / 180.0 * Math.PI).scaledToMag(-550).add(data.ball.position.scaled(-1));
                     isReachable = true;
                     target = idealContactPoint;
                     targetTime = delta;
@@ -74,6 +72,7 @@ public class AtbaState extends MoveToPointState {
             }
         } catch (Exception e) {/* Prediction is not available, so we fall back to current location */}
 
+
         if(target.equals(idealContactPoint) && data.car.orientation.foward.dot(ballScoringVec.scaled(-1).normalized()) >= .2){
             //System.out.println("would turn around here. angle is: " + data.car.orientation.foward.angleInDegrees(ballScoringVec) + " degrees.");
             if (getToScoringPos1.normalized().dot(ballScoringVec.scaled(-1).normalized()) > getToScoringPos2.normalized().dot(ballScoringVec.scaled(-1).normalized())){
@@ -81,18 +80,21 @@ public class AtbaState extends MoveToPointState {
             } else {
                 target = getToScoringPos2;
             }
-
         }
 
-
-
+        //StaticRenderer.displayVector(Color.red, Vec3.ZERO, new Vec3(100, 0, 0), data);
+        //StaticRenderer.displayVector(Color.green, Vec3.ZERO, new Vec3(100, 0, 0).rotate2d(180 / 180 * Math.PI), data);
         //StaticRenderer.displayVector(Color.WHITE, data.ball.position, target, data);
+
+        StaticRenderer.displayVector(Color.PINK, data.car.position, data.car.orientation.up.scaledToMag(500).add(data.car.position.scaled(-1)), data);
+        StaticRenderer.displayVector(Color.ORANGE, data.ball.position, getToScoringPos1, data);
         StaticRenderer.displayVector(Color.PINK, data.car.position, data.car.orientation.foward.scaledToMag(500).add(data.car.position.scaled(-1)), data);
         StaticRenderer.displayVector(Color.YELLOW, data.ball.position, getToScoringPos2, data);
         StaticRenderer.displayVector(Color.WHITE, data.car.position, getToScoringPos1, data);
         StaticRenderer.displayVector(Color.ORANGE, data.ball.position, getToScoringPos1, data);
         StaticRenderer.displayVector(Color.GREEN, data.ball.position, ballScoringVec, data);
         StaticRenderer.displayVector(Color.CYAN, data.car.position, idealContactPoint, data);
+
 
         targetSpeed = (target.minus(carPos).flatten().mag())/Math.max(targetTime, 0.001);
         if(data.ball.position.dist(carPos) > 600){

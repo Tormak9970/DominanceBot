@@ -115,6 +115,12 @@ public class Vec3 extends rlbot.vector.Vector3 {
         return new Vec3(tx, ty, tz);
     }
 
+    public Vec3 rotate2d(double ang) {
+        double c = Math.cos(ang);
+        double s = Math.sin(ang);
+        return new Vec3(c * this.x - s * this.y, s * this.x + c * this.y, this.z);
+    }
+
     public static Vec3 cast(rlbot.flat.Vector3 v){
         Vec3 castedVector = new Vec3(v.x(), v.y(), v.z());
         return castedVector;
